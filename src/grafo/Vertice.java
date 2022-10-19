@@ -14,6 +14,5 @@ public class Vertice<T> {
   public void setValor(T valor) {
     this.valor = valor;
   }
-
   
 }

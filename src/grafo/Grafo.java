@@ -13,6 +13,11 @@ public class Grafo<T> {
   private ArrayList<Aresta> arestas;
   private ArrayList<Vertice<T>> vertices;
 
+  public Grafo() {
+    this.arestas = new ArrayList<Aresta>();
+    this.vertices = new ArrayList<Vertice<T>>();
+  }
+
   public Vertice<T> adicionarVertice(T valor) {
     Vertice<T> novo = new Vertice<T>(valor);
     this.vertices.add(novo);
@@ -46,7 +51,8 @@ public class Grafo<T> {
       verticeDestino = adicionarVertice(destino);
     novaAresta = new Aresta(verticeOrigem, verticeDestino, peso);
 
-    this.arestas.add(novaAresta);
+    if (!verticeOrigem.equals(verticeDestino))
+      this.arestas.add(novaAresta);
   }
 
   private ArrayList<Aresta> obterDestino(Vertice vertice) {
@@ -81,5 +87,13 @@ public class Grafo<T> {
         }
       }
     }
+  }
+
+  public ArrayList<Aresta> getArestas() {
+    return arestas;
+  }
+
+  public ArrayList<Vertice<T>> getVertices() {
+    return vertices;
   }
 }
