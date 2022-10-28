@@ -41,18 +41,18 @@ public class App {
                     e.getMessage());
         }
 
-        ArrayList<Aresta> arestas = grafo.getArestas();
+        // ArrayList<Aresta> arestas = grafo.getArestas();
 
-        for (int i = 0; i < arestas.size(); i++) {
-            Aresta aresta = arestas.get(i);
+        // for (int i = 0; i < arestas.size(); i++) {
+        //     Aresta aresta = arestas.get(i);
 
-            System.out.println("Cidade Origem " + aresta.getOrigem().getValor() + "\nCidade Destino: "
-                    + aresta.getDestino().getValor() + "\nDistância: " + aresta.getPeso()
-                    + "\n---------------------------------------------\n");
+        //     System.out.println("Cidade Origem " + aresta.getOrigem().getValor() + "\nCidade Destino: "
+        //             + aresta.getDestino().getValor() + "\nDistância: " + aresta.getPeso()
+        //             + "\n---------------------------------------------\n");
 
-        }
+        // }
 
-        grafo.buscaEmLargura();
+        // grafo.buscaEmLargura();
 
         // Lista as cidades presentes no grafo
         ArrayList<Vertice<String>> cidades = grafo.getVertices();
@@ -88,21 +88,21 @@ public class App {
         ArrayList<Vertice<String>> cidades = grafo.getVertices();
         while (true) {
             System.out.println(
-                    "Escolha uma opção: \n1 - Obter cidades vizinhas\n2 - Obter todos os caminhos a partir de uma cidade\n3 - Sair");
+                    "\nEscolha uma opção: \n1 - Obter cidades vizinhas\n2 - Obter todos os caminhos a partir de uma cidade\n3 - Sair");
             int escolha = userinput.nextInt();
             if (escolha == 1) {
                 System.out.print("Digite o código da cidade ao qual deseja saber as vizinhas: ");
                 codigo = userinput.nextInt();
-                System.out.println("\n Cidades vizinhas da cidade " + cidades.get(codigo).getValor() + ": ");
+                System.out.println("\nCidades vizinhas da cidade " + cidades.get(codigo).getValor() + ": ");
                 for (int i = 0; i < arestas.size(); i++) {
                     Aresta aresta = arestas.get(i);
-                    if (aresta.getOrigem() == cidades.get(codigo))
+                    if (aresta.getOrigem() == cidades.get(codigo) && aresta.getPeso() > 0)
                         System.out.print(aresta.getDestino().getValor() + " ");
                 }
             } else if (escolha == 2) {
                 System.out.print("Digite o código da cidade que deseja saber os caminhos: ");
                 codigo = userinput.nextInt();
-                //TODO: Adicionar função que mostra para onde há caminhos sem mostrar a distância
+                grafo.buscaEmLargura(cidades.get(codigo));
             } else if (escolha == 3) {
                 userinput.close();
                 break;

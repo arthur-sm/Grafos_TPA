@@ -89,6 +89,28 @@ public class Grafo<T> {
     }
   }
 
+  public void buscaEmLargura(Vertice origem) {
+    ArrayList<Vertice> marcados = new ArrayList<>();
+    ArrayList<Vertice> fila = new ArrayList<>();
+    Vertice atual = origem;
+
+    fila.add(atual);
+    while (fila.size() > 0) {
+      atual = fila.get(0);
+      fila.remove(0);
+      marcados.add(atual);
+      System.out.println(atual.getValor());
+      ArrayList<Aresta> destinos = this.obterDestino(atual);
+      Vertice proximo;
+      for (int i = 0; i < destinos.size(); i++) {
+        proximo = destinos.get(i).getDestino();
+        if (!marcados.contains(proximo) && !fila.contains(proximo)) {
+          fila.add(proximo);
+        }
+      }
+    }
+  }
+
   public ArrayList<Aresta> getArestas() {
     return arestas;
   }
