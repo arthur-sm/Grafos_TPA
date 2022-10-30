@@ -1,5 +1,7 @@
 package grafo;
-
+/**
+ * Classe para armazenar as cidades lidas no arquivo de entrada.
+ */
 public class Cidade {
   private String nome;
   private int codigo;

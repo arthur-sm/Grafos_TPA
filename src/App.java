@@ -13,7 +13,9 @@ public class App {
     public static void main(String[] args) throws Exception {
 
         Grafo<Cidade> grafo = new Grafo<Cidade>();
-
+        /*
+         * Ler a entrada e armezana os valores dentro dos objetos da classe Cidade (nome e codigo)
+         */
         try {
             FileReader arq = new FileReader("./src/testes/entrada.txt");
             BufferedReader lerArq = new BufferedReader(arq);

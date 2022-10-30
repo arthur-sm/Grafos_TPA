@@ -18,13 +18,22 @@ public class Grafo<T> {
     this.vertices = new ArrayList<Vertice<T>>();
   }
 
+  /**
+   * Função repsonsável por adicionar um vertice ao grafo, criando o vertice baseado em um valor.
+   * @param valor
+   * @return
+   */
   public Vertice<T> adicionarVertice(T valor) {
     Vertice<T> novo = new Vertice<T>(valor);
     this.vertices.add(novo);
 
     return novo;
   }
-
+  /**
+   * Função responsável para obter o vértice a partir de um determinado valor.
+   * @param valor
+   * @return
+   */
   private Vertice obterVertice(T valor) {
     Vertice vertice;
     for (int i = 0; i < this.vertices.size(); i++) {
@@ -35,7 +44,13 @@ public class Grafo<T> {
 
     return null;
   }
-
+  /**
+   * Função repsonsável por adicionar um aresta ao grafo, criando o vertice baseado em uma origem, destino e peso.
+   * E criando os vértices desses.
+   * @param origem
+   * @param destino
+   * @param peso
+   */
   public void adicionarAresta(T origem, T destino, float peso) {
     Vertice verticeOrigem, verticeDestino;
     Aresta novaAresta;
@@ -55,6 +70,11 @@ public class Grafo<T> {
       this.arestas.add(novaAresta);
   }
 
+  /**
+   * Função responsável por obter os destinos a partir de um vertice
+   * @param vertice
+   * @return
+   */
   private ArrayList<Aresta<T>> obterDestino(Vertice vertice) {
     ArrayList<Aresta<T>> destinos = new ArrayList<>();
     Aresta atual;
@@ -67,6 +87,9 @@ public class Grafo<T> {
     return destinos;
   }
 
+  /**
+   * Função responsável por imprimir os elementos que possuem alguma conexão com outros.
+   */
   public void buscaEmLargura() {
     ArrayList<Vertice> marcados = new ArrayList<>();
     ArrayList<Vertice> fila = new ArrayList<>();
@@ -89,6 +112,10 @@ public class Grafo<T> {
     }
   }
 
+  /**
+   * Função responsável por imprimir os elementos que possuem alguma conexão com outros, baseado em um vertice de origem.
+   * @param origem
+   */
   public void buscaEmLargura(Vertice origem) {
     ArrayList<Vertice> marcados = new ArrayList<>();
     ArrayList<Vertice> fila = new ArrayList<>();
