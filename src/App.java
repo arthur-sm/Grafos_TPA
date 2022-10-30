@@ -84,7 +84,7 @@ public class App {
             if (escolha == 1) {
                 System.out.print("Digite o código da cidade ao qual deseja saber as vizinhas: ");
                 codigo = userinput.nextInt() - 1;
-                if (codigo < 0 || codigo + 1 >= cidades.size()) {
+                if (codigo < 0 || codigo + 1 > cidades.size()) {
                     System.out.println("Código inválido");
                 } else {
                     System.out.println();
