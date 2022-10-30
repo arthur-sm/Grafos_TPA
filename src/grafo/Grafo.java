@@ -10,11 +10,11 @@ package grafo;
 import java.util.ArrayList;
 
 public class Grafo<T> {
-  private ArrayList<Aresta> arestas;
+  private ArrayList<Aresta<T>> arestas;
   private ArrayList<Vertice<T>> vertices;
 
   public Grafo() {
-    this.arestas = new ArrayList<Aresta>();
+    this.arestas = new ArrayList<Aresta<T>>();
     this.vertices = new ArrayList<Vertice<T>>();
   }
 
@@ -55,8 +55,8 @@ public class Grafo<T> {
       this.arestas.add(novaAresta);
   }
 
-  private ArrayList<Aresta> obterDestino(Vertice vertice) {
-    ArrayList<Aresta> destinos = new ArrayList<>();
+  private ArrayList<Aresta<T>> obterDestino(Vertice vertice) {
+    ArrayList<Aresta<T>> destinos = new ArrayList<>();
     Aresta atual;
     for (int i = 0; i < this.arestas.size(); i++) {
       atual = this.arestas.get(i);
@@ -78,7 +78,7 @@ public class Grafo<T> {
       fila.remove(0);
       marcados.add(atual);
       System.out.println(atual.getValor());
-      ArrayList<Aresta> destinos = this.obterDestino(atual);
+      ArrayList<Aresta<T>> destinos = this.obterDestino(atual);
       Vertice proximo;
       for (int i = 0; i < destinos.size(); i++) {
         proximo = destinos.get(i).getDestino();
@@ -100,7 +100,7 @@ public class Grafo<T> {
       fila.remove(0);
       marcados.add(atual);
       System.out.println(atual.getValor());
-      ArrayList<Aresta> destinos = this.obterDestino(atual);
+      ArrayList<Aresta<T>> destinos = this.obterDestino(atual);
       Vertice proximo;
       for (int i = 0; i < destinos.size(); i++) {
         proximo = destinos.get(i).getDestino();
@@ -111,7 +111,7 @@ public class Grafo<T> {
     }
   }
 
-  public ArrayList<Aresta> getArestas() {
+  public ArrayList<Aresta<T>> getArestas() {
     return arestas;
   }
 

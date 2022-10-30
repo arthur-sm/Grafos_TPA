@@ -5,13 +5,14 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 import grafo.Aresta;
+import grafo.Cidade;
 import grafo.Grafo;
 import grafo.Vertice;
 
 public class App {
     public static void main(String[] args) throws Exception {
 
-        Grafo<String> grafo = new Grafo<String>();
+        Grafo<Cidade> grafo = new Grafo<Cidade>();
 
         try {
             FileReader arq = new FileReader("./src/testes/entrada.txt");
@@ -21,12 +22,12 @@ public class App {
             String linha = lerArq.readLine();
             for (int i = 0; i < Integer.parseInt(value); i++) {
                 String[] linhaSplit = linha.split(";");
-                grafo.adicionarVertice(linhaSplit[1]);
+                grafo.adicionarVertice(new Cidade(linhaSplit[1], Integer.parseInt(linhaSplit[0])));
                 linha = lerArq.readLine(); // lê da segunda até a última linha
             }
             for (int i = 0; i < Integer.parseInt(value); i++) {
                 String[] linhaSplit = linha.split(";");
-                ArrayList<Vertice<String>> verticesGrafo = grafo.getVertices();
+                ArrayList<Vertice<Cidade>> verticesGrafo = grafo.getVertices();
                 for (int j = 0; j < Integer.parseInt(value); j++) {
                     grafo.adicionarAresta(verticesGrafo.get(i).getValor(),
                             verticesGrafo.get(j).getValor(),
@@ -41,25 +42,12 @@ public class App {
                     e.getMessage());
         }
 
-        // ArrayList<Aresta> arestas = grafo.getArestas();
-
-        // for (int i = 0; i < arestas.size(); i++) {
-        //     Aresta aresta = arestas.get(i);
-
-        //     System.out.println("Cidade Origem " + aresta.getOrigem().getValor() + "\nCidade Destino: "
-        //             + aresta.getDestino().getValor() + "\nDistância: " + aresta.getPeso()
-        //             + "\n---------------------------------------------\n");
-
-        // }
-
-        // grafo.buscaEmLargura();
-
         // Lista as cidades presentes no grafo
-        ArrayList<Vertice<String>> cidades = grafo.getVertices();
+        ArrayList<Vertice<Cidade>> cidades = grafo.getVertices();
         System.out.println("Cidades: ");
         for (int i = 0; i < cidades.size(); i++) {
-            Vertice<String> cidade = cidades.get(i);
-            System.out.println(i + " " + cidade.getValor());
+            Vertice<Cidade> cidade = cidades.get(i);
+            System.out.println(cidade.getValor());
         }
         Menu(grafo);
     }
@@ -67,7 +55,7 @@ public class App {
     /**
      * @param grafo - Grafo onde as operações serão realizadas
      */
-    public static void Menu(Grafo<String> grafo) {
+    public static void Menu(Grafo<Cidade> grafo) {
         /*
          * i. Obter cidades vizinhas: ao escolher essa opção o usuário deverá informar o
          * código de uma cidade
@@ -84,28 +72,36 @@ public class App {
          */
         Scanner userinput = new Scanner(System.in);
         int codigo;
-        ArrayList<Aresta> arestas = grafo.getArestas();
-        ArrayList<Vertice<String>> cidades = grafo.getVertices();
-        while (true) {
+        boolean rodando = true;
+        ArrayList<Aresta<Cidade>> arestas = grafo.getArestas();
+        ArrayList<Vertice<Cidade>> cidades = grafo.getVertices();
+        while (rodando) {
             System.out.println(
                     "\nEscolha uma opção: \n1 - Obter cidades vizinhas\n2 - Obter todos os caminhos a partir de uma cidade\n3 - Sair");
             int escolha = userinput.nextInt();
             if (escolha == 1) {
                 System.out.print("Digite o código da cidade ao qual deseja saber as vizinhas: ");
-                codigo = userinput.nextInt();
-                System.out.println("\nCidades vizinhas da cidade " + cidades.get(codigo).getValor() + ": ");
-                for (int i = 0; i < arestas.size(); i++) {
-                    Aresta aresta = arestas.get(i);
-                    if (aresta.getOrigem() == cidades.get(codigo) && aresta.getPeso() > 0)
-                        System.out.print(aresta.getDestino().getValor() + " ");
+                codigo = userinput.nextInt() - 1;
+                if (codigo < 0 || codigo + 1 >= cidades.size()) {
+                    System.out.println("Código inválido");
+                } else {
+                    System.out.println();
+                    System.out.println("\nCidades vizinhas da cidade " + cidades.get(codigo).getValor().getNome() + ": ");
+                    for (int i = 0; i < arestas.size(); i++) {
+                        Aresta<Cidade> aresta = arestas.get(i);
+                        if (aresta.getOrigem() == cidades.get(codigo) && aresta.getPeso() > 0)
+                            System.out.print(aresta.getDestino().getValor().getNome() + " ");
+                    }
+
                 }
             } else if (escolha == 2) {
                 System.out.print("Digite o código da cidade que deseja saber os caminhos: ");
-                codigo = userinput.nextInt();
+                codigo = userinput.nextInt() - 1;
                 grafo.buscaEmLargura(cidades.get(codigo));
             } else if (escolha == 3) {
-                userinput.close();
-                break;
+                rodando = false;
+            } else {
+                System.out.println("Código inválido!");
             }
         }
     }
