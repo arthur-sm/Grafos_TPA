@@ -75,7 +75,7 @@ public class Grafo<T> {
    * @param vertice
    * @return
    */
-  private ArrayList<Aresta<T>> obterDestino(Vertice vertice) {
+  public ArrayList<Aresta<T>> obterDestino(Vertice vertice) {
     ArrayList<Aresta<T>> destinos = new ArrayList<>();
     Aresta atual;
     for (int i = 0; i < this.arestas.size(); i++) {
@@ -83,7 +83,6 @@ public class Grafo<T> {
       if (atual.getOrigem().equals(vertice))
         destinos.add(atual);
     }
-
     return destinos;
   }
 
@@ -120,6 +119,7 @@ public class Grafo<T> {
     ArrayList<Vertice> marcados = new ArrayList<>();
     ArrayList<Vertice> fila = new ArrayList<>();
     Vertice atual = origem;
+    Vertice proximo;
 
     fila.add(atual);
     while (fila.size() > 0) {
@@ -128,7 +128,6 @@ public class Grafo<T> {
       marcados.add(atual);
       System.out.println(atual.getValor());
       ArrayList<Aresta<T>> destinos = this.obterDestino(atual);
-      Vertice proximo;
       for (int i = 0; i < destinos.size(); i++) {
         proximo = destinos.get(i).getDestino();
         if (!marcados.contains(proximo) && !fila.contains(proximo)) {

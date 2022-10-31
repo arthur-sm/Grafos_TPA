@@ -31,6 +31,7 @@ public class App {
                 String[] linhaSplit = linha.split(";");
                 ArrayList<Vertice<Cidade>> verticesGrafo = grafo.getVertices();
                 for (int j = 0; j < Integer.parseInt(value); j++) {
+                    if(Float.parseFloat(linhaSplit[j]) > 0)
                     grafo.adicionarAresta(verticesGrafo.get(i).getValor(),
                             verticesGrafo.get(j).getValor(),
                             Float.parseFloat(linhaSplit[j]));
@@ -75,7 +76,6 @@ public class App {
         Scanner userinput = new Scanner(System.in);
         int codigo;
         boolean rodando = true;
-        ArrayList<Aresta<Cidade>> arestas = grafo.getArestas();
         ArrayList<Vertice<Cidade>> cidades = grafo.getVertices();
         while (rodando) {
             System.out.println(
@@ -83,23 +83,23 @@ public class App {
             int escolha = userinput.nextInt();
             if (escolha == 1) {
                 System.out.print("Digite o código da cidade ao qual deseja saber as vizinhas: ");
-                codigo = userinput.nextInt() - 1;
+                codigo = userinput.nextInt() - 1; //Corrigimos o valor selecionado para que fique de acordo com a indexação iniciada em 0
                 if (codigo < 0 || codigo + 1 > cidades.size()) {
                     System.out.println("Código inválido");
                 } else {
-                    System.out.println();
-                    System.out.println("\nCidades vizinhas da cidade " + cidades.get(codigo).getValor().getNome() + ": ");
-                    for (int i = 0; i < arestas.size(); i++) {
-                        Aresta<Cidade> aresta = arestas.get(i);
-                        if (aresta.getOrigem() == cidades.get(codigo) && aresta.getPeso() > 0)
-                            System.out.print(aresta.getDestino().getValor().getNome() + " ");
-                    }
-
+                    ArrayList<Aresta<Cidade>> destinos = grafo.obterDestino(cidades.get(codigo));
+                    for (int i = 0; i < destinos.size(); i++) {
+                        System.out.println(destinos.get(i).getDestino().getValor());
+                        }
                 }
             } else if (escolha == 2) {
                 System.out.print("Digite o código da cidade que deseja saber os caminhos: ");
-                codigo = userinput.nextInt() - 1;
-                grafo.buscaEmLargura(cidades.get(codigo));
+                codigo = userinput.nextInt() - 1; //Corrigimos o valor selecionado para que fique de acordo com a indexação iniciada em 0
+                if (codigo < 0 || codigo + 1 > cidades.size()) {
+                    System.out.println("Código inválido");
+                } else {
+                    grafo.buscaEmLargura(cidades.get(codigo));
+                }
             } else if (escolha == 3) {
                 rodando = false;
             } else {
