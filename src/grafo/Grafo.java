@@ -86,6 +86,14 @@ public class Grafo<T> {
     return destinos;
   }
 
+
+  /**
+   * Função que busca imprimir os elementos a partir do primeiro vertice, que possua conexão com outros
+   */
+  public void buscaEmLargura() {
+    buscaEmLargura(vertices.get(0));
+  }
+
   /**
    * Função responsável por imprimir os elementos que possuem alguma conexão com outros, baseado em um vertice de origem.
    * @param origem
