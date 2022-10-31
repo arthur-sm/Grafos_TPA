@@ -87,31 +87,6 @@ public class Grafo<T> {
   }
 
   /**
-   * Função responsável por imprimir os elementos que possuem alguma conexão com outros.
-   */
-  public void buscaEmLargura() {
-    ArrayList<Vertice> marcados = new ArrayList<>();
-    ArrayList<Vertice> fila = new ArrayList<>();
-    Vertice atual = this.vertices.get(0);
-
-    fila.add(atual);
-    while (fila.size() > 0) {
-      atual = fila.get(0);
-      fila.remove(0);
-      marcados.add(atual);
-      System.out.println(atual.getValor());
-      ArrayList<Aresta<T>> destinos = this.obterDestino(atual);
-      Vertice proximo;
-      for (int i = 0; i < destinos.size(); i++) {
-        proximo = destinos.get(i).getDestino();
-        if (!marcados.contains(proximo) && !fila.contains(proximo)) {
-          fila.add(proximo);
-        }
-      }
-    }
-  }
-
-  /**
    * Função responsável por imprimir os elementos que possuem alguma conexão com outros, baseado em um vertice de origem.
    * @param origem
    */
