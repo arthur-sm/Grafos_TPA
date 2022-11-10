@@ -46,13 +46,14 @@ public class App {
         }
 
         // Lista as cidades presentes no grafo
-        ArrayList<Vertice<Cidade>> cidades = grafo.getVertices();
-        System.out.println("Cidades: ");
-        for (int i = 0; i < cidades.size(); i++) {
-            Vertice<Cidade> cidade = cidades.get(i);
-            System.out.println(cidade.getValor());
-        }
-        Menu(grafo);
+        // ArrayList<Vertice<Cidade>> cidades = grafo.getVertices();
+        // System.out.println("Cidades: ");
+        // for (int i = 0; i < cidades.size(); i++) {
+        //     Vertice<Cidade> cidade = cidades.get(i);
+        //     System.out.println(cidade.getValor());
+        // }
+        // Menu(grafo);
+        grafo.caminhamentoMinimo(grafo.getVertices().get(2));
     }
 
     /**

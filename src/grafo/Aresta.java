@@ -27,5 +27,4 @@ public class Aresta<T> {
     this.peso = peso;
   }
 
-  
 }
