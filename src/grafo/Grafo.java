@@ -131,62 +131,107 @@ public class Grafo<T> {
   }
 
   public ArrayList<Aresta<T>> caminhamentoMinimo(Vertice origem) {
-    ArrayList<Aresta<T>> custoMinimo = new ArrayList<>();
+    /*
+     * A estrutura feita por Vertice, estimativa e precedente, foi utilizada de
+     * forma
+     * análoga utilizando arestas onde Vertice = VerticeDestino (destino),
+     * Precedente = VerticeOrigem(origem)
+     * e estimativa é o Peso.
+     */
+    ArrayList<Aresta<T>> arestasCaminhoMinimo = new ArrayList<>();
+    // Aqui são os vértices que não foram verificados ainda.
     ArrayList<Vertice> abertos = new ArrayList<>();
 
+    // Aqui estamos populando os vertices do caminho minimo, já colocando a origem
+    // com o peso 0.
     for (Vertice vertice : vertices) {
       if (vertice.equals(origem)) {
-        custoMinimo.add(new Aresta<>(vertice, vertice, 0));
+        arestasCaminhoMinimo.add(new Aresta<>(vertice, vertice, 0));
       } else {
-        custoMinimo.add(new Aresta<>(null, vertice, 1000000000));
+        arestasCaminhoMinimo.add(new Aresta<>(null, vertice, 1000000000));
       }
       abertos.add(vertice);
     }
 
-    float peso = 1000000;
-    int contador = 0;
 
-    while (abertos.size() != 0 && contador < 5) {
+    /*
+     * Executando o algoritmo até todos estarem fechados.
+     * Estão sendo considerados fechados, os que não estão dentro do arraylist de
+     * abertos
+     */
+    while (abertos.size() != 0) {
+      // Esse peso é para identificar qual possui menor dentre os existentes dentro do caminho mínimo
+      float peso = 100000000;
+      
+      /*
+       * O vertice aberto é iniciado e recebe o primeiro dos abertos a fim de iniciação.
+       * Ele é setado no for abaixo a partir da busca pelo menor peso, que no caso
+       * é a menor estimativa.
+       */ 
       Vertice aberto = abertos.get(0);
-      for (Aresta k : custoMinimo) {
+      for (Aresta k : arestasCaminhoMinimo) {
         if (k.getPeso() < peso && abertos.contains(k.getDestino())) {
           aberto = k.getDestino();
         }
       }
+
+      /*
+       * A partir daqui temos a busca por dentro todas as arestas
+       * para começar a fazer as estimativas
+       */
       for (Aresta aresta : arestas) {
+        /*
+         * Caso as arestas possuam a origem igual ao vertice aberto
+         * porém o vertice aberto é a origem então o set sera feito com base no
+         * peso da aresta + 0, pois a estimativa para a origem é sempre zero
+         */
         if (aresta.getOrigem().equals(aberto) && aberto.equals(origem)) {
-          for (int i = 0; i < custoMinimo.size(); i++) {
-            if (custoMinimo.get(i).getPeso() > aresta.getPeso()
-                && aresta.getDestino().equals(custoMinimo.get(i).getDestino())) {
-              custoMinimo.get(i).setOrigem(aresta.getOrigem());
-              custoMinimo.get(i).setPeso(aresta.getPeso());
+          for (int i = 0; i < arestasCaminhoMinimo.size(); i++) {
+            if (arestasCaminhoMinimo.get(i).getPeso() > aresta.getPeso()
+                && aresta.getDestino().equals(arestasCaminhoMinimo.get(i).getDestino())) {
+              arestasCaminhoMinimo.get(i).setOrigem(aresta.getOrigem());
+              arestasCaminhoMinimo.get(i).setPeso(aresta.getPeso());
             }
           }
-        } else if (aresta.getOrigem().equals(aberto)) {
-          for (Aresta cAresta : custoMinimo) {
-            if (cAresta.getDestino().equals(aresta.getOrigem())) {
-              peso = cAresta.getPeso();
+        } 
+        /*
+         * Porém caso não seja a origem, é importante saber qual a estimativa do vertice
+         * Para somar com o peso da aresta que vai até o novo nó, e saber se essa estimativa é menor
+         * que a anterior. 
+         */
+        else if (aresta.getOrigem().equals(aberto)) {
+          float pesoEstimativaCaminhoMinimo = 0;
+          /*
+           * Aqui então percorremos aos vertices, estimativas e precedentes do caminho mínimo
+           * E assim a ideia é que se a origem da aresta que está sendo vista, for igual 
+           * ao vertice dentro do caminhoMínimo, então devemos somar a estimativa dentro do caminho mínimo
+           * com o peso da aresta
+           */
+          for (Aresta arestaCM : arestasCaminhoMinimo) {
+            if (arestaCM.getDestino().equals(aresta.getOrigem())) {
+              pesoEstimativaCaminhoMinimo = arestaCM.getPeso();
             }
           }
 
-          for (int i = 0; i < custoMinimo.size(); i++) {
-            if (custoMinimo.get(i).getPeso() > (aresta.getPeso() + peso)
-                && aresta.getDestino().equals(custoMinimo.get(i).getDestino())) {
-              // System.out.println(custoMinimo.get(i).getDestino().getValor() + " " +
-              // aresta.getPeso() + " " + peso +" = " + (peso + aresta.getPeso()));
-              custoMinimo.get(i).setOrigem(aresta.getOrigem());
-              custoMinimo.get(i).setPeso(aresta.getPeso() + peso);
+          for (int i = 0; i < arestasCaminhoMinimo.size(); i++) {
+            if (arestasCaminhoMinimo.get(i).getPeso() > (aresta.getPeso() + pesoEstimativaCaminhoMinimo)
+                && aresta.getDestino().equals(arestasCaminhoMinimo.get(i).getDestino())) {
+              arestasCaminhoMinimo.get(i).setOrigem(aresta.getOrigem());
+              arestasCaminhoMinimo.get(i).setPeso(aresta.getPeso() + pesoEstimativaCaminhoMinimo);
             }
           }
         }
       }
+      /*
+       * Aqui fecha o aberto atual.
+       */
       abertos.remove(aberto);
     }
-    for (Aresta k : custoMinimo) {
+    for (Aresta k : arestasCaminhoMinimo) {
       System.out.println(k.getOrigem().getValor() + " -> " + k.getDestino().getValor() + " " + k.getPeso());
     }
 
-    return custoMinimo;
+    return arestasCaminhoMinimo;
   }
 
   public ArrayList<Aresta<T>> getArestas() {
