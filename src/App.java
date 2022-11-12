@@ -14,7 +14,8 @@ public class App {
 
         Grafo<Cidade> grafo = new Grafo<Cidade>();
         /*
-         * Ler a entrada e armezana os valores dentro dos objetos da classe Cidade (nome e codigo)
+         * Ler a entrada e armezana os valores dentro dos objetos da classe Cidade (nome
+         * e codigo)
          */
         try {
             FileReader arq = new FileReader("./src/testes/entrada.txt");
@@ -31,10 +32,10 @@ public class App {
                 String[] linhaSplit = linha.split(";");
                 ArrayList<Vertice<Cidade>> verticesGrafo = grafo.getVertices();
                 for (int j = 0; j < Integer.parseInt(value); j++) {
-                    if(Float.parseFloat(linhaSplit[j]) > 0)
-                    grafo.adicionarAresta(verticesGrafo.get(i).getValor(),
-                            verticesGrafo.get(j).getValor(),
-                            Float.parseFloat(linhaSplit[j]));
+                    if (Float.parseFloat(linhaSplit[j]) > 0)
+                        grafo.adicionarAresta(verticesGrafo.get(i).getValor(),
+                                verticesGrafo.get(j).getValor(),
+                                Float.parseFloat(linhaSplit[j]));
                 }
                 linha = lerArq.readLine(); // lê da segunda até a última linha
             }
@@ -46,12 +47,12 @@ public class App {
         }
 
         // Lista as cidades presentes no grafo
-        // ArrayList<Vertice<Cidade>> cidades = grafo.getVertices();
-        // System.out.println("Cidades: ");
-        // for (int i = 0; i < cidades.size(); i++) {
-        //     Vertice<Cidade> cidade = cidades.get(i);
-        //     System.out.println(cidade.getValor());
-        // }
+        ArrayList<Vertice<Cidade>> cidades = grafo.getVertices();
+        System.out.println("Cidades: ");
+        for (int i = 0; i < cidades.size(); i++) {
+            Vertice<Cidade> cidade = cidades.get(i);
+            System.out.println(cidade.getValor());
+        }
         // Menu(grafo);
         grafo.caminhamentoMinimo(grafo.getVertices().get(2));
     }
@@ -84,18 +85,20 @@ public class App {
             int escolha = userinput.nextInt();
             if (escolha == 1) {
                 System.out.print("Digite o código da cidade ao qual deseja saber as vizinhas: ");
-                codigo = userinput.nextInt() - 1; //Corrigimos o valor selecionado para que fique de acordo com a indexação iniciada em 0
+                codigo = userinput.nextInt() - 1; // Corrigimos o valor selecionado para que fique de acordo com a
+                                                  // indexação iniciada em 0
                 if (codigo < 0 || codigo + 1 > cidades.size()) {
                     System.out.println("Código inválido");
                 } else {
                     ArrayList<Aresta<Cidade>> destinos = grafo.obterDestino(cidades.get(codigo));
                     for (int i = 0; i < destinos.size(); i++) {
                         System.out.println(destinos.get(i).getDestino().getValor());
-                        }
+                    }
                 }
             } else if (escolha == 2) {
                 System.out.print("Digite o código da cidade que deseja saber os caminhos: ");
-                codigo = userinput.nextInt() - 1; //Corrigimos o valor selecionado para que fique de acordo com a indexação iniciada em 0
+                codigo = userinput.nextInt() - 1; // Corrigimos o valor selecionado para que fique de acordo com a
+                                                  // indexação iniciada em 0
                 if (codigo < 0 || codigo + 1 > cidades.size()) {
                     System.out.println("Código inválido");
                 } else {
