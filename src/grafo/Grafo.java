@@ -144,7 +144,7 @@ public class Grafo<T> {
      * 'Precedente' = VerticeOrigem(origem)
      * 'estimativa' = "Peso"
      */
-    
+
     // Lista de arestas onde será processado o caminho mínimo
     ArrayList<Aresta<T>> arestasCaminhoMinimo = new ArrayList<>();
     // Lista de vértices que ainda não tiveram o caminho mínimo definido
@@ -262,7 +262,8 @@ public class Grafo<T> {
       abertos.remove(aberto);
     }
     for (Aresta k : arestasCaminhoMinimo) {
-      System.out.println(k.getOrigem().getValor() + " -> " + k.getDestino().getValor() + " " + k.getPeso());
+      System.out.printf("%15s - %6.2f -> %s \n",
+        k.getOrigem().getValor(), k.getPeso(), k.getDestino().getValor());
     }
 
     return arestasCaminhoMinimo;
