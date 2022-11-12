@@ -262,8 +262,8 @@ public class Grafo<T> {
       abertos.remove(aberto);
     }
     for (Aresta k : arestasCaminhoMinimo) {
-      System.out.printf("%15s - %6.2f -> %s \n",
-        k.getOrigem().getValor(), k.getPeso(), k.getDestino().getValor());
+      System.out.printf("Precedente: %5s | Vértice: %5s | Estimativa: %4.2f\n",
+        k.getOrigem().getValor(), k.getDestino().getValor(), k.getPeso());
     }
 
     return arestasCaminhoMinimo;

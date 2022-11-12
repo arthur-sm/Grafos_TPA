@@ -18,7 +18,7 @@ public class App {
          * e codigo)
          */
         try {
-            FileReader arq = new FileReader("./src/testes/entrada.txt");
+            FileReader arq = new FileReader("./src/testes/entrada_wikimedia.txt");
             BufferedReader lerArq = new BufferedReader(arq);
 
             String value = lerArq.readLine();
@@ -54,7 +54,7 @@ public class App {
             System.out.println(cidade.getValor());
         }
         // Menu(grafo);
-        grafo.caminhamentoMinimo(grafo.getVertices().get(2));
+        grafo.caminhamentoMinimo(grafo.getVertices().get(0));
     }
 
     /**
