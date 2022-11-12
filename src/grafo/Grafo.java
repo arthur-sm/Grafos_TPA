@@ -132,11 +132,11 @@ public class Grafo<T> {
 
   /**
    * @param
-   * origem        - Vértice a partir do qual se deseja obter caminho
+   * verticeInicial        - Vértice a partir do qual se deseja obter caminho
    *               mínimo para demais vértices do grafo
    * @return
    */
-  public ArrayList<Aresta<T>> caminhamentoMinimo(Vertice origem) {
+  public ArrayList<Aresta<T>> caminhamentoMinimo(Vertice verticeInicial) {
     /*
      * A estrutura, composta pelos campos 'Vertice', 'estimativa' e 'precedente',
      * foi implementada com uso de arestas, onde:
@@ -158,7 +158,7 @@ public class Grafo<T> {
      * que será rapidamente substituido pelo primeira estimativa encontrada
      */
     for (Vertice vertice : vertices) {
-      if (vertice.equals(origem)) {
+      if (vertice.equals(verticeInicial)) {
         arestasCaminhoMinimo.add(new Aresta<>(vertice, vertice, 0));
       } else {
         arestasCaminhoMinimo.add(new Aresta<>(null, vertice, 1000000000)); // 1.000.000.000
@@ -174,7 +174,7 @@ public class Grafo<T> {
       // TODO: melhorar esse comentário
       // Esse peso é para identificar qual possui menor dentre os existentes dentro do
       // caminho mínimo
-      float peso = 100000000; // 100.000.000
+      float menorEstimativa = 100000000; // 100.000.000
 
       // Inicializamos a variável 'aberto'
       Vertice aberto = abertos.get(0);
@@ -185,7 +185,8 @@ public class Grafo<T> {
        * (100.000.000)
        */
       for (Aresta k : arestasCaminhoMinimo) {
-        if (k.getPeso() < peso && abertos.contains(k.getDestino())) {
+        if (k.getPeso() < menorEstimativa && abertos.contains(k.getDestino())) {
+          menorEstimativa = k.getPeso();
           aberto = k.getDestino();
         }
       }
@@ -200,7 +201,7 @@ public class Grafo<T> {
          * e o vertice aberto for a origem, o set será feito com base no
          * peso da aresta + 0, pois a estimativa para a origem é sempre zero
          */
-        if (aresta.getOrigem().equals(aberto) && aberto.equals(origem)) {
+        if (aresta.getOrigem().equals(aberto) && aberto.equals(verticeInicial)) {
           /*
          * Procuramos uma aresta que tem como origem o vértice que está sendo 
          * analisado atualmente ('aberto'). Se esse vértice 'aberto' for o 
