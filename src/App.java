@@ -53,8 +53,7 @@ public class App {
             Vertice<Cidade> cidade = cidades.get(i);
             System.out.println(cidade.getValor());
         }
-        // Menu(grafo);
-        grafo.caminhamentoMinimo(grafo.getVertices().get(0));
+        Menu(grafo);
     }
 
     /**
@@ -76,39 +75,54 @@ public class App {
          * iii. Sair: o programa é encerrado.
          */
         Scanner userinput = new Scanner(System.in);
-        int codigo;
+        int codigoUm, codigoDois;
         boolean rodando = true;
         ArrayList<Vertice<Cidade>> cidades = grafo.getVertices();
         while (rodando) {
             System.out.println(
-                    "\nEscolha uma opção: \n1 - Obter cidades vizinhas\n2 - Obter todos os caminhos a partir de uma cidade\n3 - Sair");
+                    "\nEscolha uma opção: \n1 - Obter cidades vizinhas\n2 - Obter todos os caminhos a partir de uma cidade\n3 - Obter caminho mínimo entre dois vértices (Dijkstra)\n4 - Sair");
             int escolha = userinput.nextInt();
             if (escolha == 1) {
                 System.out.print("Digite o código da cidade ao qual deseja saber as vizinhas: ");
-                codigo = userinput.nextInt() - 1; // Corrigimos o valor selecionado para que fique de acordo com a
-                                                  // indexação iniciada em 0
-                if (codigo < 0 || codigo + 1 > cidades.size()) {
+                // Corrigimos o valor selecionado para que fique de acordo com a indexação
+                // iniciada em 0
+                codigoUm = userinput.nextInt() - 1;
+                if (codigoUm < 0 || codigoUm + 1 > cidades.size()) {
                     System.out.println("Código inválido");
                 } else {
-                    ArrayList<Aresta<Cidade>> destinos = grafo.obterDestino(cidades.get(codigo));
+                    ArrayList<Aresta<Cidade>> destinos = grafo.obterDestino(cidades.get(codigoUm));
                     for (int i = 0; i < destinos.size(); i++) {
                         System.out.println(destinos.get(i).getDestino().getValor());
                     }
                 }
             } else if (escolha == 2) {
                 System.out.print("Digite o código da cidade que deseja saber os caminhos: ");
-                codigo = userinput.nextInt() - 1; // Corrigimos o valor selecionado para que fique de acordo com a
-                                                  // indexação iniciada em 0
-                if (codigo < 0 || codigo + 1 > cidades.size()) {
+                codigoUm = userinput.nextInt() - 1;
+                if (codigoUm < 0 || codigoUm + 1 > cidades.size()) {
                     System.out.println("Código inválido");
                 } else {
-                    grafo.buscaEmLargura(cidades.get(codigo));
+                    grafo.buscaEmLargura(cidades.get(codigoUm));
                 }
             } else if (escolha == 3) {
+                System.out.print("Digite o código da cidade origem para o caminho mínimo desejado: ");
+                codigoUm = userinput.nextInt() - 1;
+                if (codigoUm < 0 || codigoUm + 1 > cidades.size()) {
+                    System.out.println("Código inválido");
+                } else {
+                    System.out.print("Digite o código da cidade destino do caminho mínimo desejado: ");
+                    codigoDois = userinput.nextInt() - 1;
+                    if (codigoDois < 0 || codigoDois + 1 > cidades.size()) {
+                        System.out.println("Código inválido");
+                    } else {
+                        System.out.println(grafo.buscaCaminhoMinimo(cidades.get(codigoUm), cidades.get(codigoDois)));
+                    }
+                }
+            } else if (escolha == 4) {
                 rodando = false;
             } else {
                 System.out.println("Código inválido!");
             }
         }
+        userinput.close();
     }
 }

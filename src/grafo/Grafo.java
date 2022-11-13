@@ -133,7 +133,7 @@ public class Grafo<T> {
   /**
    * @param
    * verticeInicial        - Vértice a partir do qual se deseja obter caminho
-   *               mínimo para demais vértices do grafo
+   *                       mínimo para demais vértices do grafo
    * @return
    */
   public ArrayList<Aresta<T>> caminhamentoMinimo(Vertice verticeInicial) {
@@ -154,7 +154,7 @@ public class Grafo<T> {
      * Varremos os vértices do grafo para iniciar a análise
      * O vértice do qual iremos partir (origem) tem peso definido como 0
      * Demais vértices, no momento, tem estimativa indefinida, então colocamos um
-     * valor "infinito" como caminho mínimo entre a origem e cada um deles, 
+     * valor "infinito" como caminho mínimo entre a origem e cada um deles,
      * que será rapidamente substituido pelo primeira estimativa encontrada
      */
     for (Vertice vertice : vertices) {
@@ -171,16 +171,14 @@ public class Grafo<T> {
      * Ou seja, até que não tenhamos mais nenhum vértice na categoria 'abertos'
      */
     while (abertos.size() != 0) {
-      // TODO: melhorar esse comentário
-      // Esse peso é para identificar qual possui menor dentre os existentes dentro do
-      // caminho mínimo
+      // iniciamos a menor iniciativa com um valor 'infinto', como no laço anterior
       float menorEstimativa = 100000000; // 100.000.000
 
       // Inicializamos a variável 'aberto'
       Vertice aberto = abertos.get(0);
       /*
-       * Percorremos a lista de arestas para encontrar um 
-       * vértice da categoria 'abertos' que seja destino de 
+       * Percorremos a lista de arestas para encontrar um
+       * vértice da categoria 'abertos' que seja destino de
        * uma aresta com peso menor que o valor extrapolado
        * (100.000.000)
        */
@@ -203,14 +201,14 @@ public class Grafo<T> {
          */
         if (aresta.getOrigem().equals(aberto) && aberto.equals(verticeInicial)) {
           /*
-         * Procuramos uma aresta que tem como origem o vértice que está sendo 
-         * analisado atualmente ('aberto'). Se esse vértice 'aberto' for o 
-         * vértice origem (parâmetro da função)...
-         */
+           * Procuramos uma aresta que tem como origem o vértice que está sendo
+           * analisado atualmente ('aberto'). Se esse vértice 'aberto' for o
+           * vértice origem (parâmetro da função)...
+           */
           for (int i = 0; i < arestasCaminhoMinimo.size(); i++) {
             /*
-             * ...procuramos a atual estimativa (aresta da lista arestasCaminhoMinimo) 
-             * que ligue o vértice de origem à mesma cidade que a aresta 
+             * ...procuramos a atual estimativa (aresta da lista arestasCaminhoMinimo)
+             * que ligue o vértice de origem à mesma cidade que a aresta
              * sendo analisada nessa iteração do loop
              */
             if (arestasCaminhoMinimo.get(i).getPeso() > aresta.getPeso()
@@ -218,7 +216,7 @@ public class Grafo<T> {
               /*
                * Por fim, se a aresta que liga os dois vértices possui um peso menor do que
                * a estimativa atual, atualizamos a estimativa com o peso dessa aresta
-               * e precedente igual ao da vértice 
+               * e precedente igual ao da vértice
                */
               arestasCaminhoMinimo.get(i).setOrigem(aresta.getOrigem());
               arestasCaminhoMinimo.get(i).setPeso(aresta.getPeso());
@@ -227,20 +225,17 @@ public class Grafo<T> {
         }
 
         /*
-         * Porém caso não seja a origem, é importante saber qual a estimativa do vertice
+         * Caso não seja a origem, é importante saber qual a estimativa do vertice
          * Para somar com o peso da aresta que vai até o novo nó, e saber se essa
-         * estimativa é menor
-         * que a anterior.
+         * estimativa é menor que a anterior.
          */
         else if (aresta.getOrigem().equals(aberto)) {
           float pesoEstimativaCaminhoMinimo = 0;
           /*
            * Aqui então percorremos aos vertices, estimativas e precedentes do caminho
-           * mínimo
-           * E assim a ideia é que se a origem da aresta que está sendo vista, for igual
-           * ao vertice dentro do caminhoMínimo, então devemos somar a estimativa dentro
-           * do caminho mínimo
-           * com o peso da aresta
+           * mínimo. A ideia é que, se a origem da aresta que está sendo vista for igual
+           * ao vertice dentro do caminhoMínimo, então somaremos a estimativa dentro
+           * do caminho mínimo com o peso da aresta
            */
           for (Aresta arestaCM : arestasCaminhoMinimo) {
             if (arestaCM.getDestino().equals(aresta.getOrigem())) {
@@ -262,12 +257,25 @@ public class Grafo<T> {
        */
       abertos.remove(aberto);
     }
-    for (Aresta k : arestasCaminhoMinimo) {
-      System.out.printf("Precedente: %5s | Vértice: %5s | Estimativa: %4.2f\n",
-        k.getOrigem().getValor(), k.getDestino().getValor(), k.getPeso());
-    }
+    // for (Aresta k : arestasCaminhoMinimo) {
+    // System.out.printf("Precedente: %5s | Vértice: %5s | Estimativa: %4.2f\n",
+    // k.getOrigem().getValor(), k.getDestino().getValor(), k.getPeso());
+    // }
 
     return arestasCaminhoMinimo;
+  }
+
+  public String buscaCaminhoMinimo(Vertice verticeInicio, Vertice verticeFim) {
+    String caminhoDesejado = "Caminho não encontrado";
+    ArrayList<Aresta<T>> caminhoMin = caminhamentoMinimo(verticeInicio);
+    for (Aresta caminho : caminhoMin) {
+      if (caminho.getDestino().equals(verticeFim)) {
+        caminhoDesejado = String.format("    Origem: %s\n   Vértice: %s\nPrecedente: %s\nEstimativa: %4.2f\n",
+            verticeInicio.getValor(), caminho.getDestino().getValor(), caminho.getOrigem().getValor(),
+            caminho.getPeso());
+      }
+    }
+    return caminhoDesejado;
   }
 
   public ArrayList<Aresta<T>> getArestas() {
