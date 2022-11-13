@@ -33,7 +33,7 @@ public class Grafo<T> {
   }
 
   /**
-   * Função responsável para obter o vértice a partir de um determinado valor.
+   * Função que encontra no grafo o vértice com o valor desejado.
    * 
    * @param valor
    * @return
@@ -78,9 +78,10 @@ public class Grafo<T> {
   }
 
   /**
-   * Função responsável por obter os destinos a partir de um vertice
+   * Função que recebe um vértice e aponta com quais outros ele possui conexão
+   * direta
    * 
-   * @param vertice
+   * @param vertice - Vértice do qual queremos saber os vizinhos
    * @return
    */
   public ArrayList<Aresta<T>> obterDestino(Vertice vertice) {
@@ -106,7 +107,7 @@ public class Grafo<T> {
    * Função responsável por imprimir os elementos que possuem alguma conexão com
    * outros, baseado em um vertice de origem.
    * 
-   * @param origem
+   * @param origem - Vertice da onde partirá a busca
    */
   public void buscaEmLargura(Vertice origem) {
     ArrayList<Vertice> marcados = new ArrayList<>();
@@ -134,7 +135,8 @@ public class Grafo<T> {
    * @param
    * verticeInicial        - Vértice a partir do qual se deseja obter caminho
    *                       mínimo para demais vértices do grafo
-   * @return
+   * @return ArrayList de Arestas com arestas pertencentes ao caminho mínimo
+   *         encontrado
    */
   public ArrayList<Aresta<T>> caminhamentoMinimo(Vertice verticeInicial) {
     /*
@@ -257,14 +259,17 @@ public class Grafo<T> {
        */
       abertos.remove(aberto);
     }
-    // for (Aresta k : arestasCaminhoMinimo) {
-    // System.out.printf("Precedente: %5s | Vértice: %5s | Estimativa: %4.2f\n",
-    // k.getOrigem().getValor(), k.getDestino().getValor(), k.getPeso());
-    // }
 
     return arestasCaminhoMinimo;
   }
 
+  /**
+   * @param verticeInicio - Vértice a partir do qual será gerado o caminho mínimo
+   * @param verticeFim    - Vértice que será procurado como destino entre as
+   *                      arestas do caminho mínimo
+   * @return String formatada com Origem (verticeInicio), Vértice (verticeFim),
+   *         Precedente e Estimativa
+   */
   public String buscaCaminhoMinimo(Vertice verticeInicio, Vertice verticeFim) {
     String caminhoDesejado = "Caminho não encontrado";
     ArrayList<Aresta<T>> caminhoMin = caminhamentoMinimo(verticeInicio);

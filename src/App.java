@@ -39,7 +39,6 @@ public class App {
                 }
                 linha = lerArq.readLine(); // lê da segunda até a última linha
             }
-
             arq.close();
         } catch (IOException e) {
             System.err.printf("Erro na abertura do arquivo: %s.\n",
@@ -60,20 +59,6 @@ public class App {
      * @param grafo - Grafo onde as operações serão realizadas
      */
     public static void Menu(Grafo<Cidade> grafo) {
-        /*
-         * i. Obter cidades vizinhas: ao escolher essa opção o usuário deverá informar o
-         * código de uma cidade
-         * e então o programa deve exibir os códigos e nomes de todas as cidades
-         * vizinhas da cidade informada (vértices adjacentes)
-         * bem como a distância da cidade escolhida para cada uma das vizinhas.
-         * ii. Obter todos os caminhos a partir de uma cidade: o usuário deverá informar
-         * o código de uma cidade
-         * e o programa deverá exibir todas as cidades (código e nome) às quais é
-         * possível chegar saindo da cidade dada
-         * (seria um caminhamento em largura no grafo usando a cidade dada como vértice
-         * de origem do caminhamento).
-         * iii. Sair: o programa é encerrado.
-         */
         Scanner userinput = new Scanner(System.in);
         int codigoUm, codigoDois;
         boolean rodando = true;
