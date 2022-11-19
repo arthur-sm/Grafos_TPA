@@ -283,10 +283,6 @@ public class Grafo<T> {
     return caminhoDesejado;
   }
 
-  /**
-   * Função apenas de exibição da árvore
-   * @return
-   */
   public String imprimeArvoreMinima() {
     ArrayList<Aresta<T>> arvoreMin = primArvoreMinima();
     String caminho = "";
@@ -301,26 +297,40 @@ public class Grafo<T> {
     return resultado;
   }
 
+  /**
+   * Função que analisa todas as arestas partindo de um vértice arbitrário,
+   * selecionando as menores até que tenhamos uma aresta com cada outro vértice
+   * como destino
+   * @return ArrayList de arestas pertencentes ao conjunto "arvore mínima"
+   */
   private ArrayList<Aresta<T>> primArvoreMinima() {
+    //Declaração das variáveis e inicialização
+    //Lista de arestas que compõe a árvore mínima do grafo
+    ArrayList<Aresta<T>> arvoreMinima = new ArrayList<>();
+    //Lista de vértices que são destino de alguma das arestas dentro da lista árvore minima
     ArrayList<Vertice<T>> verticesAnalisados = new ArrayList<>();
     ArrayList<Aresta<T>> arestasInexploradas = new ArrayList<>();
     ArrayList<Aresta<T>> arvoreMinima = new ArrayList<>();
     float menorPeso = 0;
     Aresta<T> menorAresta = new Aresta<>(null, null, 0);
     
+    //Inicia a análise partindo do primeiro vértice obtido do grafo
     verticesAnalisados.add(this.vertices.get(0));
+    //Adiciona todas as arestas do grafo à lista de arestas inexploradas
     arestasInexploradas = this.arestas;
 
+    //Análisa as arestas dentre as arestasInexploradas até que seja possível chegar em todos os vértices do grafo na árvore minima
     while(!verticesAnalisados.containsAll(this.vertices)) {
       menorPeso = 10000000;
-
-      // Dentro desse for é buscado a aresta com o menor peso
       for(Aresta<T> a: arestasInexploradas) {
         if((a.getPeso() > 0) && (a.getPeso() < menorPeso) && (!verticesAnalisados.contains(a.getDestino())) && (verticesAnalisados.contains(a.getOrigem())) && (!arvoreMinima.contains(a))) {
           menorAresta = a;
           menorPeso = a.getPeso();  
         }
+        else {
+        }
       }
+      //Caso a aresta escolhida já não esteja dentro da lista de árvore mínima, adicionamos ele
       if(!arvoreMinima.contains(menorAresta)) {
         verticesAnalisados.add(menorAresta.getDestino());
         arvoreMinima.add(menorAresta);
