@@ -65,7 +65,7 @@ public class App {
         ArrayList<Vertice<Cidade>> cidades = grafo.getVertices();
         while (rodando) {
             System.out.println(
-                    "\nEscolha uma opção: \n1 - Obter cidades vizinhas\n2 - Obter todos os caminhos a partir de uma cidade\n3 - Obter caminho mínimo entre dois vértices (Dijkstra)\n4 - Sair");
+                    "\nEscolha uma opção: \n1 - Obter cidades vizinhas\n2 - Obter todos os caminhos a partir de uma cidade\n3 - Obter caminho mínimo entre dois vértices (Dijkstra)\n4 - Obter Árovre Mínima\n5 - Sair");
             int escolha = userinput.nextInt();
             if (escolha == 1) {
                 System.out.print("Digite o código da cidade ao qual deseja saber as vizinhas: ");
@@ -103,6 +103,9 @@ public class App {
                     }
                 }
             } else if (escolha == 4) {
+                System.out.println("Imprimindo árvore mínima gerada por algorítmo de PRIM:\n");
+                System.out.println(grafo.imprimeArvoreMinima());
+            } else if (escolha == 5) {
                 rodando = false;
             } else {
                 System.out.println("Código inválido!");

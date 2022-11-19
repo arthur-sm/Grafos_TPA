@@ -138,7 +138,7 @@ public class Grafo<T> {
    * @return ArrayList de Arestas com arestas pertencentes ao caminho mínimo
    *         encontrado
    */
-  public ArrayList<Aresta<T>> caminhamentoMinimo(Vertice verticeInicial) {
+  public ArrayList<Aresta<T>> caminhamentoMinimo(Vertice<T> verticeInicial) {
     /*
      * A estrutura, composta pelos campos 'Vertice', 'estimativa' e 'precedente',
      * foi implementada com uso de arestas, onde:
@@ -270,10 +270,10 @@ public class Grafo<T> {
    * @return String formatada com Origem (verticeInicio), Vértice (verticeFim),
    *         Precedente e Estimativa
    */
-  public String buscaCaminhoMinimo(Vertice verticeInicio, Vertice verticeFim) {
+  public String buscaCaminhoMinimo(Vertice<T> verticeInicio, Vertice<T> verticeFim) {
     String caminhoDesejado = "Caminho não encontrado";
     ArrayList<Aresta<T>> caminhoMin = caminhamentoMinimo(verticeInicio);
-    for (Aresta caminho : caminhoMin) {
+    for (Aresta<T> caminho : caminhoMin) {
       if (caminho.getDestino().equals(verticeFim)) {
         caminhoDesejado = String.format("    Origem: %s\n   Vértice: %s\nPrecedente: %s\nEstimativa: %4.2f\n",
             verticeInicio.getValor(), caminho.getDestino().getValor(), caminho.getOrigem().getValor(),
@@ -281,6 +281,54 @@ public class Grafo<T> {
       }
     }
     return caminhoDesejado;
+  }
+
+  public String imprimeArvoreMinima() {
+    ArrayList<Aresta<T>> arvoreMin = primArvoreMinima();
+    String caminho = "";
+    String resultado = "";
+    Float pesoTotal = 0f;
+    for(Aresta<T> a: arvoreMin) {
+      caminho = String.format("Origem: %s  Destino: %s  Peso: %.2f \n", a.getOrigem().getValor(), a.getDestino().getValor(), a.getPeso());
+      resultado += caminho;
+      pesoTotal += a.getPeso();
+    }
+    resultado += String.format("\n Peso Total: %3.2f", pesoTotal);
+    return resultado;
+  }
+
+  private ArrayList<Aresta<T>> primArvoreMinima() {
+    ArrayList<Vertice<T>> verticesAnalisados = new ArrayList<>();
+    ArrayList<Aresta<T>> arestasInexploradas = new ArrayList<>();
+    ArrayList<Aresta<T>> arvoreMinima = new ArrayList<>();
+    float menorPeso = 0;
+    Aresta<T> menorAresta = new Aresta<>(null, null, 0);
+
+    for(Vertice<T> verticeAnalise: this.vertices) {
+      menorPeso = 10000000;
+      verticesAnalisados.add(verticeAnalise);
+
+      for(Aresta<T> caminho: this.arestas) {
+        if(caminho.getOrigem().equals(verticeAnalise)) {
+          arestasInexploradas.add(caminho);
+        }
+      }
+
+      for(Aresta<T> a: arestasInexploradas) {
+        if((a.getPeso() != 0) && (a.getPeso() < menorPeso) && !verticesAnalisados.contains(a.getDestino()) && verticesAnalisados.contains(a.getOrigem())) {
+          menorAresta = a;
+          menorPeso = menorAresta.getPeso();
+          verticesAnalisados.add(menorAresta.getDestino());
+          arvoreMinima.add(menorAresta);
+        }
+        else {
+        }
+      }
+
+
+    }
+    
+    return arvoreMinima;
   }
 
   public ArrayList<Aresta<T>> getArestas() {
