@@ -303,8 +303,8 @@ public class Grafo<T> {
 
   private ArrayList<Aresta<T>> primArvoreMinima() {
     ArrayList<Vertice<T>> verticesAnalisados = new ArrayList<>();
-    //Lista de arestas que ainda não estão dentro da lista árvore míninma
     ArrayList<Aresta<T>> arestasInexploradas = new ArrayList<>();
+    ArrayList<Aresta<T>> arvoreMinima = new ArrayList<>();
     float menorPeso = 0;
     Aresta<T> menorAresta = new Aresta<>(null, null, 0);
     
@@ -312,26 +312,21 @@ public class Grafo<T> {
     arestasInexploradas = this.arestas;
 
     while(!verticesAnalisados.containsAll(this.vertices)) {
-      //"Reseta" o peso afim de reiniciar a análise
       menorPeso = 10000000;
 
       // Dentro desse for é buscado a aresta com o menor peso
       for(Aresta<T> a: arestasInexploradas) {
-        /*
-        * Selecionamos a menor aresta que seja um caminho entre dois vértices, tenha o vértice de origem dentro
-        * dos já analisados (integrantes da árvore mínima) e destino fora dos já analisados  
-        */
         if((a.getPeso() > 0) && (a.getPeso() < menorPeso) && (!verticesAnalisados.contains(a.getDestino())) && (verticesAnalisados.contains(a.getOrigem())) && (!arvoreMinima.contains(a))) {
           menorAresta = a;
           menorPeso = a.getPeso();  
         }
       }
       if(!arvoreMinima.contains(menorAresta)) {
-        verticesAnalisados.add(menorAresta.getDestino()); //Adicionamos o vértice de destino da nova aresta como parte da árvore mínima
+        verticesAnalisados.add(menorAresta.getDestino());
         arvoreMinima.add(menorAresta);
       }
     }
-    return arvoreMinima; //Retorna lista de arestas que compõe a árvore mínima
+    return arvoreMinima;
   }
 
   public ArrayList<Aresta<T>> getArestas() {
