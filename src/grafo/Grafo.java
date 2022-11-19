@@ -310,7 +310,6 @@ public class Grafo<T> {
     //Lista de vértices que são destino de alguma das arestas dentro da lista árvore minima
     ArrayList<Vertice<T>> verticesAnalisados = new ArrayList<>();
     ArrayList<Aresta<T>> arestasInexploradas = new ArrayList<>();
-    ArrayList<Aresta<T>> arvoreMinima = new ArrayList<>();
     float menorPeso = 0;
     Aresta<T> menorAresta = new Aresta<>(null, null, 0);
     
