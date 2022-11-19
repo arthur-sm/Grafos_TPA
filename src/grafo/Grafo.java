@@ -303,31 +303,25 @@ public class Grafo<T> {
     ArrayList<Aresta<T>> arvoreMinima = new ArrayList<>();
     float menorPeso = 0;
     Aresta<T> menorAresta = new Aresta<>(null, null, 0);
+    
+    verticesAnalisados.add(this.vertices.get(0));
+    arestasInexploradas = this.arestas;
 
-    for(Vertice<T> verticeAnalise: this.vertices) {
+    while(!verticesAnalisados.containsAll(this.vertices)) {
       menorPeso = 10000000;
-      verticesAnalisados.add(verticeAnalise);
-
-      for(Aresta<T> caminho: this.arestas) {
-        if(caminho.getOrigem().equals(verticeAnalise)) {
-          arestasInexploradas.add(caminho);
-        }
-      }
-
       for(Aresta<T> a: arestasInexploradas) {
-        if((a.getPeso() != 0) && (a.getPeso() < menorPeso) && !verticesAnalisados.contains(a.getDestino()) && verticesAnalisados.contains(a.getOrigem())) {
+        if((a.getPeso() > 0) && (a.getPeso() < menorPeso) && (!verticesAnalisados.contains(a.getDestino())) && (verticesAnalisados.contains(a.getOrigem())) && (!arvoreMinima.contains(a))) {
           menorAresta = a;
-          menorPeso = menorAresta.getPeso();
-          verticesAnalisados.add(menorAresta.getDestino());
-          arvoreMinima.add(menorAresta);
+          menorPeso = a.getPeso();  
         }
         else {
         }
       }
-
-
+      if(!arvoreMinima.contains(menorAresta)) {
+        verticesAnalisados.add(menorAresta.getDestino());
+        arvoreMinima.add(menorAresta);
+      }
     }
-    
     return arvoreMinima;
   }
 
