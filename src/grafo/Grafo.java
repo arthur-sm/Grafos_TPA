@@ -7,6 +7,7 @@
 
 package grafo;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 public class Grafo<T> {
@@ -16,6 +17,14 @@ public class Grafo<T> {
   public Grafo() {
     this.arestas = new ArrayList<Aresta<T>>();
     this.vertices = new ArrayList<Vertice<T>>();
+  }
+
+  public ArrayList<Aresta<T>> getArestas() {
+    return arestas;
+  }
+
+  public ArrayList<Vertice<T>> getVertices() {
+    return vertices;
   }
 
   /**
@@ -288,8 +297,9 @@ public class Grafo<T> {
     String caminho = "";
     String resultado = "";
     Float pesoTotal = 0f;
-    for(Aresta<T> a: arvoreMin) {
-      caminho = String.format("Origem: %s  Destino: %s  Peso: %.2f \n", a.getOrigem().getValor(), a.getDestino().getValor(), a.getPeso());
+    for (Aresta<T> a : arvoreMin) {
+      caminho = String.format("Origem: %s  Destino: %s  Peso: %.2f \n", a.getOrigem().getValor(),
+          a.getDestino().getValor(), a.getPeso());
       resultado += caminho;
       pesoTotal += a.getPeso();
     }
@@ -301,36 +311,40 @@ public class Grafo<T> {
    * Função que analisa todas as arestas partindo de um vértice arbitrário,
    * selecionando as menores até que tenhamos uma aresta com cada outro vértice
    * como destino
+   * 
    * @return ArrayList de arestas pertencentes ao conjunto "arvore mínima"
    */
   private ArrayList<Aresta<T>> primArvoreMinima() {
-    //Declaração das variáveis e inicialização
-    //Lista de arestas que compõe a árvore mínima do grafo
+    // Declaração das variáveis e inicialização
+    // Lista de arestas que compõe a árvore mínima do grafo
     ArrayList<Aresta<T>> arvoreMinima = new ArrayList<>();
-    //Lista de vértices que são destino de alguma das arestas dentro da lista árvore minima
+    // Lista de vértices que são destino de alguma das arestas dentro da lista
+    // árvore minima
     ArrayList<Vertice<T>> verticesAnalisados = new ArrayList<>();
     ArrayList<Aresta<T>> arestasInexploradas = new ArrayList<>();
     float menorPeso = 0;
     Aresta<T> menorAresta = new Aresta<>(null, null, 0);
-    
-    //Inicia a análise partindo do primeiro vértice obtido do grafo
+
+    // Inicia a análise partindo do primeiro vértice obtido do grafo
     verticesAnalisados.add(this.vertices.get(0));
-    //Adiciona todas as arestas do grafo à lista de arestas inexploradas
+    // Adiciona todas as arestas do grafo à lista de arestas inexploradas
     arestasInexploradas = this.arestas;
 
-    //Análisa as arestas dentre as arestasInexploradas até que seja possível chegar em todos os vértices do grafo na árvore minima
-    while(!verticesAnalisados.containsAll(this.vertices)) {
+    // Análisa as arestas dentre as arestasInexploradas até que seja possível chegar
+    // em todos os vértices do grafo na árvore minima
+    while (!verticesAnalisados.containsAll(this.vertices)) {
       menorPeso = 10000000;
-      for(Aresta<T> a: arestasInexploradas) {
-        if((a.getPeso() > 0) && (a.getPeso() < menorPeso) && (!verticesAnalisados.contains(a.getDestino())) && (verticesAnalisados.contains(a.getOrigem())) && (!arvoreMinima.contains(a))) {
+      for (Aresta<T> a : arestasInexploradas) {
+        if ((a.getPeso() > 0) && (a.getPeso() < menorPeso) && (!verticesAnalisados.contains(a.getDestino()))
+            && (verticesAnalisados.contains(a.getOrigem())) && (!arvoreMinima.contains(a))) {
           menorAresta = a;
-          menorPeso = a.getPeso();  
-        }
-        else {
+          menorPeso = a.getPeso();
+        } else {
         }
       }
-      //Caso a aresta escolhida já não esteja dentro da lista de árvore mínima, adicionamos ele
-      if(!arvoreMinima.contains(menorAresta)) {
+      // Caso a aresta escolhida já não esteja dentro da lista de árvore mínima,
+      // adicionamos ele
+      if (!arvoreMinima.contains(menorAresta)) {
         verticesAnalisados.add(menorAresta.getDestino());
         arvoreMinima.add(menorAresta);
       }
@@ -338,12 +352,62 @@ public class Grafo<T> {
     return arvoreMinima;
   }
 
-  public ArrayList<Aresta<T>> getArestas() {
-    return arestas;
+  private Aresta<T> arestaOposta(Aresta<T> aresta) {
+    ArrayList<Aresta<T>> arestas = this.getArestas();
+    Aresta<T> contraAresta = null;
+    for (Aresta<T> a : arestas) {
+      if (a.getOrigem().equals(aresta.getDestino()) && a.getDestino().equals(aresta.getOrigem()))
+        contraAresta = a;
+    }
+    return contraAresta;
   }
 
-  public ArrayList<Vertice<T>> getVertices() {
-    return vertices;
+  /**
+   * @param arco - Aresta do qual se deseja saber o fluxo
+   * @return float do peso do arco - peso da aresta de direção oposta
+   */
+  private float calculaFluxo(Aresta<T> arco) {
+    return (arco.getPeso() - arestaOposta(arco).getPeso());
+  }
+
+  private float menorPeso(ArrayList<Aresta<T>> fluxo) {
+    float menor = 1000000000;
+    for(Aresta<T> ar: fluxo) {
+      if(ar.getPeso() < menor)
+        menor = ar.getPeso();
+    }
+    return menor;
+  }
+
+  public Float encontraFluxoMaximo(Vertice<T> partida, Vertice<T> fim) {
+    ArrayList<Aresta<T>> fluxo = new ArrayList<>();
+    float menor;
+    ArrayList<Float> menores = new ArrayList<>();
+    int i = 0;
+    ArrayList<Vertice<T>> verticeMarc = new ArrayList();
+    Aresta<T> a;
+    Aresta<T> oposta = null;
+    Vertice<T> ultimoVertice = partida;
+    verticeMarc.add(partida);
+    while (!verticeMarc.contains(fim) && i < this.arestas.size()) {
+      a = this.arestas.get(i);
+      if (ultimoVertice == a.getOrigem() && !verticeMarc.contains(a.getDestino())) {
+        verticeMarc.add(a.getDestino());
+        ultimoVertice = a.getDestino();
+        fluxo.add(a);
+      }
+      i++;
+    }
+    menor = menorPeso(fluxo);
+    menores.add(menor);
+    for(Aresta<T> arco: fluxo) {
+      arco.setPeso(arco.getPeso() - menor);
+      oposta = arestaOposta(arco);
+      oposta.setPeso(oposta.getPeso() + menor);
+      /*System.out.println("Origem: " + arco.getOrigem().getValor() + " Destino: " + arco.getDestino().getValor()
+          + " Peso: " + arco.getPeso());*/
+    }
+    return menor;
   }
 
 }

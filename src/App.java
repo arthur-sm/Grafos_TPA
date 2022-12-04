@@ -65,7 +65,7 @@ public class App {
         ArrayList<Vertice<Cidade>> cidades = grafo.getVertices();
         while (rodando) {
             System.out.println(
-                    "\nEscolha uma opção: \n1 - Obter cidades vizinhas\n2 - Obter todos os caminhos a partir de uma cidade\n3 - Obter caminho mínimo entre dois vértices (Dijkstra)\n4 - Obter Árovre Mínima\n5 - Sair");
+                    "\nEscolha uma opção: \n1 - Obter cidades vizinhas\n2 - Obter todos os caminhos a partir de uma cidade\n3 - Obter caminho mínimo entre dois vértices (Dijkstra)\n4 - Obter Árovre Mínima\n5 - Fluxo Máximo\n6 - Sair");
             int escolha = userinput.nextInt();
             if (escolha == 1) {
                 System.out.print("Digite o código da cidade ao qual deseja saber as vizinhas: ");
@@ -106,6 +106,20 @@ public class App {
                 System.out.println("Imprimindo árvore mínima gerada por algorítmo de PRIM:\n");
                 System.out.println(grafo.imprimeArvoreMinima());
             } else if (escolha == 5) {
+                System.out.print("Digite o código da cidade origem para cálculo do fluxo máximo: ");
+                codigoUm = userinput.nextInt() - 1;
+                if (codigoUm < 0 || codigoUm + 1 > cidades.size()) {
+                    System.out.println("Código inválido");
+                } else {
+                    System.out.print("Digite o código da cidade destino para cálculo do fluxo máximo: ");
+                    codigoDois = userinput.nextInt() - 1;
+                    if (codigoDois < 0 || codigoDois + 1 > cidades.size()) {
+                        System.out.println("Código inválido");
+                    } else {
+                        System.out.println("Fluxo máximo: " + grafo.encontraFluxoMaximo(cidades.get(codigoUm), cidades.get(codigoDois)));
+                    }
+                }
+            } else if (escolha == 6) {
                 rodando = false;
             } else {
                 System.out.println("Código inválido!");
